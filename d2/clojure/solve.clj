@@ -16,7 +16,8 @@
      (map #(str/split % #" "))
      (map (fn [[c n]] [c (parse-int n)]))
      (reduce move [0 0])
-     (reduce * 1))
+     (reduce * 1)
+     (printf "Part 1: %d\n"))
 
 (defn move2 [[x y aim] [cmd n]]
   (match cmd
@@ -30,4 +31,5 @@
      (map (fn [[c n]] [c (parse-int n)]))
      (reduce move2 [0 0 0])
      (take 2)
-     (reduce * 1))
+     (reduce * 1)
+     (printf "Part 2: %d\n"))
