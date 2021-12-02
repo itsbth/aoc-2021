@@ -1,3 +1,4 @@
+(ns itsbth.aoc-2021.d1)
 (require '[clojure.string :as str])
 
 
