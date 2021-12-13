@@ -1,49 +1,49 @@
-from collections import defaultdict
-
 # INPUT = '../sample'
 INPUT = '../input'
 
 dots = []
 
-grid = defaultdict(lambda: False)
+grid = set()
 
 ff = open(INPUT)
 for line in ff:
     if not line.strip():
         break
     x, y = map(int, line.strip().split(','))
-    grid[(x, y)] = True
+    grid.add((x, y))
 
 
 def viz(gr):
-    mx = max(x for (x, _) in gr.keys())
-    my = max(y for (_, y) in gr.keys())
+    mx = max(x for (x, _) in gr)
+    my = max(y for (_, y) in gr)
     for y in range(my+1):
         for x in range(mx+1):
             print('##' if (x, y) in gr else '..', end='')
         print("")
 
 
+first_fold = True
+
 for fi in ff:
     ax, v = fi[len('fold along '):].strip().split('=')
     v = int(v)
-    ng = dict()
+    ng = set()
     if ax == 'x':
-        for (x, y), b in grid.items():
+        for (x, y) in grid:
             if x < v:
-                ng[(x, y)] = b
+                ng.add((x, y))
             else:
-                ng[(-x + 2*v, y)] = b
+                ng.add((-x + 2*v, y))
     elif ax == 'y':
-        for (x, y), b in grid.items():
+        for (x, y) in grid:
             if y < v:
-                ng[(x, y)] = b
+                ng.add((x, y))
             else:
-                ng[(x, -y + 2*v)] = b
+                ng.add((x, -y + 2*v))
     grid = ng
+    if first_fold:
+        print("Part 1:", len(ng))
+        first_fold = False
 
-# viz(grid)
-# print('---')
+print("Part 2:")
 viz(ng)
-# print(ng)
-print("Part 1:", len(ng))
