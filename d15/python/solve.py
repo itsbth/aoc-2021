@@ -1,6 +1,6 @@
-from queue import PriorityQueue
 from math import inf
 from collections import defaultdict
+from heapq import heappush, heappop
 
 grid = {(x, y): int(v) for y, line in enumerate(open('../input'))
         for x, v in enumerate(line.strip())}
@@ -46,13 +46,12 @@ def debug(r, t, cf):
 
 
 def ds(sp, tgt, risk, neighbours):
-    q = PriorityQueue()
-    q.put((0, sp))
+    q = [(0, sp)]
     cost = defaultdict(lambda: inf)
     visited = set()
     cf = {}
-    while not q.empty():
-        (d, p) = q.get()
+    while q:
+        (d, p) = heappop(q)
         visited.add(p)
         if p == tgt:
             debug(risk, tgt, cf)
@@ -60,7 +59,7 @@ def ds(sp, tgt, risk, neighbours):
         for nb in neighbours(p):
             nc = d + risk(nb)
             if nb not in visited and cost[nb] > nc:
-                q.put((nc, nb))
+                heappush(q, (nc, nb))
                 cost[nb] = nc
                 cf[nb] = p
     return inf
